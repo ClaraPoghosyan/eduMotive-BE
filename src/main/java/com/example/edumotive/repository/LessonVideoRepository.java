@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface LessonVideoRepository extends JpaRepository<LessonVideo, Long> {
+public interface LessonVideoRepository extends JpaRepository<LessonVideo, Integer> {
 
     List<LessonVideo> findByCourseId(Long courseId);
 }

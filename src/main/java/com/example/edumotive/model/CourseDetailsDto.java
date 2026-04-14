@@ -16,6 +16,7 @@ public class CourseDetailsDto {
     private String language;
     private String groupName;
     private String authorName;
+    private Integer authorId;
     private List<CourseFaqDto> faqs;
     private List<LessonVideoDto> videos;
 
@@ -32,6 +33,7 @@ public class CourseDetailsDto {
             String imageUrl,
             String groupName,
             String authorName,
+            Integer authorId,
             List<CourseFaqDto> faqs,
             List<LessonVideoDto> videos
     ) {
@@ -47,6 +49,7 @@ public class CourseDetailsDto {
         this.imageUrl = imageUrl;
         this.groupName = groupName;
         this.authorName = authorName;
+        this.authorId = authorId;
         this.faqs = faqs;
         this.videos = videos;
     }
@@ -98,6 +101,9 @@ public class CourseDetailsDto {
         return authorName;
     }
 
+    public Integer getAuthorId() {
+        return authorId;
+    }
     public List<CourseFaqDto> getFaqs() {
         return faqs;
     }

@@ -44,6 +44,7 @@ public class CourseController {
                         course.getImageUrl(),
                         course.getCategory().getName(),
                         course.getAuthor().getFullName(),
+                        course.getAuthor().getId(),
                         course.getFaqs()
                                 .stream()
                                 .map(faq -> new CourseFaqDto(
@@ -84,6 +85,7 @@ public class CourseController {
                 course.getImageUrl(),
                 course.getCategory().getName(),
                 course.getAuthor().getFullName(),
+                course.getAuthor().getId(),
                 course.getFaqs()
                         .stream()
                         .map(faq -> new CourseFaqDto(
