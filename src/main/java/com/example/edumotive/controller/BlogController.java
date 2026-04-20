@@ -2,6 +2,7 @@ package com.example.edumotive.controller;
 
 import com.example.edumotive.model.BlogPost;
 import com.example.edumotive.repository.BlogPostRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,5 +21,12 @@ public class BlogController {
     @GetMapping
     public List<BlogPost> getAllBlogs() {
         return blogPostRepository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BlogPost> getBlogById(@PathVariable Integer id) {
+        return blogPostRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
