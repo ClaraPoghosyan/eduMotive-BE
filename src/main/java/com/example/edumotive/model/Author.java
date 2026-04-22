@@ -1,5 +1,6 @@
 package com.example.edumotive.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class Author {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private List<Course> courses;
 
@@ -44,53 +46,40 @@ public class Author {
     @Column(name = "what_you_learn", columnDefinition = "TEXT")
     private String whatYouLearn;
 
-    /* ---------------- GETTERS ---------------- */
+    /* ---------------- GETTERS & SETTERS ---------------- */
 
-    public Integer getId() {
-        return id;
-    }
+    public Integer getId() { return id; }
 
-    public String getFullName() {
-        return fullName;
-    }
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
 
-    public String getSpecialization() {
-        return specialization;
-    }
+    public String getSpecialization() { return specialization; }
+    public void setSpecialization(String specialization) { this.specialization = specialization; }
 
-    public String getBiography() {
-        return biography;
-    }
+    public String getBiography() { return biography; }
+    public void setBiography(String biography) { this.biography = biography; }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
-    public List<Course> getCourses() {
-        return courses;
-    }
-    public String getExperience() {
-        return experience;
-    }
+    public List<Course> getCourses() { return courses; }
 
-    public String getEducation() {
-        return education;
-    }
+    public String getExperience() { return experience; }
+    public void setExperience(String experience) { this.experience = experience; }
 
-    public String getSkills() {
-        return skills;
-    }
+    public String getEducation() { return education; }
+    public void setEducation(String education) { this.education = education; }
 
-    public String getAbout() {
-        return about;
-    }
+    public String getSkills() { return skills; }
+    public void setSkills(String skills) { this.skills = skills; }
 
-    public String getTeachingPhilosophy() {
-        return teachingPhilosophy;
-    }
+    public String getAbout() { return about; }
+    public void setAbout(String about) { this.about = about; }
 
-    public String getWhatYouLearn() {
-        return whatYouLearn;
-    }
+    public String getTeachingPhilosophy() { return teachingPhilosophy; }
+    public void setTeachingPhilosophy(String teachingPhilosophy) { this.teachingPhilosophy = teachingPhilosophy; }
+
+    public String getWhatYouLearn() { return whatYouLearn; }
+    public void setWhatYouLearn(String whatYouLearn) { this.whatYouLearn = whatYouLearn; }
 
 }

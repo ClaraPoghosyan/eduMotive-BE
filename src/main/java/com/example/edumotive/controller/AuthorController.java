@@ -2,6 +2,7 @@ package com.example.edumotive.controller;
 
 import com.example.edumotive.model.*;
 import com.example.edumotive.repository.AuthorRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,10 +18,13 @@ public class AuthorController {
         this.authorRepository = authorRepository;
     }
 
+    @GetMapping
+    public List<Author> getAllAuthors() {
+        return authorRepository.findAll();
+    }
+
     @GetMapping("/{id}")
     public AuthorDetailsDto getAuthorById(@PathVariable Integer id) {
-
-
         Author author = authorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Author not found"));
 
@@ -47,5 +51,38 @@ public class AuthorController {
                 author.getWhatYouLearn(),
                 courses
         );
+    }
+
+    @PostMapping
+    public ResponseEntity<Author> createAuthor(@RequestBody Author author) {
+        Author saved = authorRepository.save(author);
+        return ResponseEntity.ok(saved);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Author> updateAuthor(@PathVariable Integer id, @RequestBody Author request) {
+        Author author = authorRepository.findById(id)
+                .orElse(null);
+        if (author == null) return ResponseEntity.notFound().build();
+
+        author.setFullName(request.getFullName());
+        author.setSpecialization(request.getSpecialization());
+        author.setBiography(request.getBiography());
+        author.setImageUrl(request.getImageUrl());
+        author.setExperience(request.getExperience());
+        author.setEducation(request.getEducation());
+        author.setSkills(request.getSkills());
+        author.setAbout(request.getAbout());
+        author.setTeachingPhilosophy(request.getTeachingPhilosophy());
+        author.setWhatYouLearn(request.getWhatYouLearn());
+
+        return ResponseEntity.ok(authorRepository.save(author));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAuthor(@PathVariable Integer id) {
+        if (!authorRepository.existsById(id)) return ResponseEntity.notFound().build();
+        authorRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
