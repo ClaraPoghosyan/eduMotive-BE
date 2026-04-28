@@ -5,6 +5,8 @@ WORKDIR /app
 COPY . .
 
 RUN chmod +x gradlew
-RUN ./gradlew clean build -x test
+RUN ./gradlew clean bootJar -x test
 
-CMD ["sh", "-c", "java -jar build/libs/*.jar --spring.profiles.active=prod"]
+EXPOSE 8080
+
+CMD ["sh", "-c", "java -jar build/libs/*SNAPSHOT.jar --server.port=$PORT --spring.profiles.active=prod"]
