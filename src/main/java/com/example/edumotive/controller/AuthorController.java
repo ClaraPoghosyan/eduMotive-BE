@@ -2,9 +2,12 @@ package com.example.edumotive.controller;
 
 import com.example.edumotive.model.*;
 import com.example.edumotive.repository.AuthorRepository;
+import com.example.edumotive.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -13,9 +16,15 @@ import java.util.List;
 public class AuthorController {
 
     private final AuthorRepository authorRepository;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public AuthorController(AuthorRepository authorRepository) {
+    public AuthorController(AuthorRepository authorRepository,
+                            UserRepository userRepository,
+                            BCryptPasswordEncoder passwordEncoder) {
         this.authorRepository = authorRepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -60,9 +69,9 @@ public class AuthorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Author> updateAuthor(@PathVariable Integer id, @RequestBody Author request) {
-        Author author = authorRepository.findById(id)
-                .orElse(null);
+    public ResponseEntity<Author> updateAuthor(@PathVariable Integer id,
+                                               @RequestBody AuthorUpdateRequest request) {
+        Author author = authorRepository.findById(id).orElse(null);
         if (author == null) return ResponseEntity.notFound().build();
 
         author.setFullName(request.getFullName());
@@ -76,6 +85,17 @@ public class AuthorController {
         author.setTeachingPhilosophy(request.getTeachingPhilosophy());
         author.setWhatYouLearn(request.getWhatYouLearn());
         author.setEmail(request.getEmail());
+
+        if (request.getEmail() != null && !request.getEmail().isBlank()
+                && request.getPassword() != null && !request.getPassword().isBlank()) {
+            User user = userRepository.findByEmail(request.getEmail()).orElse(new User());
+            user.setEmail(request.getEmail());
+            user.setFullName(request.getFullName());
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            user.setRole("INSTRUCTOR");
+            if (user.getCreatedAt() == null) user.setCreatedAt(LocalDateTime.now());
+            userRepository.save(user);
+        }
 
         return ResponseEntity.ok(authorRepository.save(author));
     }
