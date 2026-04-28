@@ -9,4 +9,4 @@ RUN ./gradlew clean bootJar -x test
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "java -jar build/libs/*SNAPSHOT.jar --server.port=$PORT --spring.profiles.active=prod"]
+CMD ["sh", "-c", "java -jar $(ls build/libs/*.jar | grep -v plain) --server.port=$PORT --spring.profiles.active=prod"]
