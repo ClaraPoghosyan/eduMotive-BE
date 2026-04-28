@@ -5,6 +5,6 @@ WORKDIR /app
 COPY . .
 
 RUN chmod +x gradlew
-RUN ./gradlew build -x test
+RUN ./gradlew clean build -x test
 
 CMD ["sh", "-c", "java -jar build/libs/*.jar --spring.profiles.active=prod"]
