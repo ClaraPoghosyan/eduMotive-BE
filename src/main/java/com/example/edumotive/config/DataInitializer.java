@@ -21,24 +21,24 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (userRepository.findByEmail("admin@edumotive.am").isEmpty()) {
-            User admin = new User();
-            admin.setEmail("admin@edumotive.am");
-            admin.setPassword(passwordEncoder.encode("admin123"));
-            admin.setFullName("Admin");
-            admin.setRole("ADMIN");
-            admin.setCreatedAt(LocalDateTime.now());
-            userRepository.save(admin);
-        }
+        User admin = userRepository.findByEmail("admin@edumotive.am").orElse(new User());
+        admin.setEmail("admin@edumotive.am");
+        if (admin.getPassword() == null) admin.setPassword(passwordEncoder.encode("admin123"));
+        admin.setFullName("Admin");
+        admin.setRole("ADMIN");
+        if (admin.getCreatedAt() == null) admin.setCreatedAt(LocalDateTime.now());
+        userRepository.save(admin);
 
-        if (userRepository.findByEmail("instructor@edumotive.am").isEmpty()) {
-            User instructor = new User();
-            instructor.setEmail("instructor@edumotive.am");
-            instructor.setPassword(passwordEncoder.encode("instructor123"));
-            instructor.setFullName("Sample Instructor");
-            instructor.setRole("INSTRUCTOR");
-            instructor.setCreatedAt(LocalDateTime.now());
-            userRepository.save(instructor);
-        }
+        User instructor = userRepository.findByEmail("instructor@edumotive.am").orElse(new User());
+        instructor.setEmail("instructor@edumotive.am");
+        if (instructor.getPassword() == null) instructor.setPassword(passwordEncoder.encode("instructor123"));
+        instructor.setFullName("Sample Instructor");
+        instructor.setRole("INSTRUCTOR");
+        if (instructor.getCreatedAt() == null) instructor.setCreatedAt(LocalDateTime.now());
+        userRepository.save(instructor);
+
+        userRepository.findAll().stream()
+                .filter(u -> u.getRole() == null)
+                .forEach(u -> { u.setRole("USER"); userRepository.save(u); });
     }
 }
