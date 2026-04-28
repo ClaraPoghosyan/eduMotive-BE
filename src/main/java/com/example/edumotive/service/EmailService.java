@@ -15,6 +15,7 @@ public class EmailService {
 
     public void sendPasswordResetEmail(String toEmail, String token) {
         SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("clara.poghosyan@gmail.com");
         message.setTo(toEmail);
         message.setSubject("Password Reset - EduMotive");
         String resetLink = "http://localhost:4200/reset-password?token=" + token;

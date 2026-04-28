@@ -83,7 +83,11 @@ public class AuthController {
         resetToken.setExpiresAt(LocalDateTime.now().plusMinutes(30));
         resetTokenRepository.save(resetToken);
 
-        emailService.sendPasswordResetEmail(email, resetToken.getToken());
+        try {
+            emailService.sendPasswordResetEmail(email, resetToken.getToken());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Mail error: " + e.getMessage() + (e.getCause() != null ? " | Cause: " + e.getCause().getMessage() : ""));
+        }
 
         return ResponseEntity.ok("If this email exists, a reset link has been sent");
     }
