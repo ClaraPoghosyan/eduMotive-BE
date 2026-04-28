@@ -58,7 +58,14 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail()).orElse(null);
 
-        if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+        if (user == null) {
+            user = new User();
+            user.setEmail(request.getEmail());
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            user.setFullName(request.getEmail());
+            user.setCreatedAt(LocalDateTime.now());
+            userRepository.save(user);
+        } else if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         }
 

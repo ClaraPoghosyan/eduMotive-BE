@@ -24,6 +24,9 @@ public class Author {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @Column(unique = true)
+    private String email;
+
     @JsonIgnore
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private List<Course> courses;
@@ -61,6 +64,9 @@ public class Author {
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
     public List<Course> getCourses() { return courses; }
 

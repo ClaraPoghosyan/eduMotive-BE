@@ -75,6 +75,7 @@ public class AuthorController {
         author.setAbout(request.getAbout());
         author.setTeachingPhilosophy(request.getTeachingPhilosophy());
         author.setWhatYouLearn(request.getWhatYouLearn());
+        author.setEmail(request.getEmail());
 
         return ResponseEntity.ok(authorRepository.save(author));
     }

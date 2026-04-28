@@ -30,5 +30,15 @@ public class DataInitializer implements CommandLineRunner {
             admin.setCreatedAt(LocalDateTime.now());
             userRepository.save(admin);
         }
+
+        if (userRepository.findByEmail("instructor@edumotive.am").isEmpty()) {
+            User instructor = new User();
+            instructor.setEmail("instructor@edumotive.am");
+            instructor.setPassword(passwordEncoder.encode("instructor123"));
+            instructor.setFullName("Sample Instructor");
+            instructor.setRole("INSTRUCTOR");
+            instructor.setCreatedAt(LocalDateTime.now());
+            userRepository.save(instructor);
+        }
     }
 }
